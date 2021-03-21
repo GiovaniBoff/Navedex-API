@@ -1,9 +1,14 @@
 const path = require('path');
+require('dotenv/config');
 
 module.exports = {
-  client: 'sqlite3',
+  client: 'pg',
+  version: 'latest',
   connection: {
-    filename: path.resolve(__dirname, 'src', 'database', 'database.sqlite')
+    host: process.env.POSTGRES_HOST,
+    user: process.env.POSTGRES_USER,
+    password: process.env.POSTGRES_PASSWORD,
+    database: process.env.POSTGRES_DB,
   },
   migrations: {
     directory: path.resolve(__dirname, 'src', 'database', 'migrations')
