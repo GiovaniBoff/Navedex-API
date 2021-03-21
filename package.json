@@ -1,0 +1,30 @@
+{
+  "name": "Navedex-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:GiovaniBoff/Navedex-api.git",
+  "author": "Giovani Boff <giovanisouza15@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "dev:debug": "nodemon --inspect src/server.js",
+    "fix": "eslint --fix src --ext .js",
+    "migrate": "knex --knexfile knexfile.js migrate:latest",
+    "migrate:make": "knex migrate:make ",
+    "seed": "knex --knexfile knexfile.js seed:run"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.22.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-prettier": "^3.3.1",
+    "nodemon": "^2.0.7",
+    "prettier": "^2.2.1",
+    "sucrase": "^3.17.1"
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "knex": "^0.95.2",
+    "sqlite3": "^5.0.2"
+  }
+}
