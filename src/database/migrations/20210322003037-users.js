@@ -18,7 +18,7 @@ module.exports = {
         allowNull:false,
         unique:true
       },
-      password:{
+      passwordHash:{
         type:Sequelize.STRING,
         allowNull:false
       },
@@ -30,7 +30,7 @@ module.exports = {
           },
           key: 'id'
         },
-        allowNull:false
+        allowNull:true
       },
       projectsId:{
         type:Sequelize.INTEGER,
@@ -40,7 +40,7 @@ module.exports = {
           },
           key: 'id'
         },
-        allowNull:false
+        allowNull:true
       },
     })
   },
