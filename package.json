@@ -8,9 +8,9 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "dev:debug": "nodemon --inspect src/server.js",
-    "migrate:up": "knex --knexfile knexfile.js migrate:latest",
-    "migrate:down": "knex migrate:down",
-    "migrate:make": "knex migrate:make ",
+    "migrate:up": "sequelize db:migrate",
+    "migrate:down": "sequelize db:migrate:undo",
+    "migrate:create": "sequelize migration:create --name",
     "seed": "knex --knexfile knexfile.js seed:run"
   },
   "devDependencies": {
@@ -20,13 +20,16 @@
     "eslint-plugin-prettier": "^3.3.1",
     "nodemon": "^2.0.7",
     "prettier": "^2.2.1",
+    "sequelize-cli": "^6.2.0",
     "sucrase": "^3.17.1"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "knex": "^0.95.2",
+    "jsonwebtoken": "^8.5.1",
+    "objection": "^2.2.15",
     "pg": "^8.5.1",
-    "sqlite3": "^5.0.2"
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^6.6.0"
   }
 }
