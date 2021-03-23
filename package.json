@@ -11,7 +11,7 @@
     "migrate:up": "sequelize db:migrate",
     "migrate:down": "sequelize db:migrate:undo",
     "migrate:create": "sequelize migration:create --name",
-    "seed": "knex --knexfile knexfile.js seed:run"
+    "seed": ""
   },
   "devDependencies": {
     "babel-eslint": "^10.1.0",
