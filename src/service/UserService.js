@@ -8,7 +8,7 @@ class UserService {
         try {
             const { password, email, name } = req.body;
 
-            const userExists = await UserModel.findOne({ where: { email } });
+            const userExists = await UserModel.findOne({ where: { email:email } });
 
             if (userExists) {
                 return res.status(400).json({ error: 'User already exists' });
@@ -26,15 +26,16 @@ class UserService {
 
     }
     async login(req, res) {
+       
         const { email, password } = req.body;
 
-        const user = await UserModel.findOne({ where: { email } });
+        const user = await UserModel.findOne({ where: { email:email } });
 
         if (!user) {
             return res.status(401).json({ error: 'User not found' });
         }
 
-        const checkedPassword = await user.checkedPassword(password);
+        const checkedPassword = await user.checkPassword(password);
 
         if (!checkedPassword) {
             return res.status(401).json({ error: 'Password doesnt match' });

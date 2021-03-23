@@ -34,6 +34,6 @@
     "objection": "^2.2.15",
     "pg": "^8.5.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^6.6.0"
+    "sequelize": "^6.6.2"
   }
 }

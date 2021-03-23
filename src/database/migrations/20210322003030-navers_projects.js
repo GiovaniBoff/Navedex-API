@@ -9,7 +9,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey:true
       },
-      naversId:{
+      navers_id:{
         type:Sequelize.INTEGER,
         references:{
           model:{
@@ -19,7 +19,7 @@ module.exports = {
         },
         allowNull:false
       },
-      projectsId:{
+      projects_id:{
         type:Sequelize.INTEGER,
         references:{
           model:{

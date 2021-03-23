@@ -6,7 +6,7 @@ class UserControler {
         await UserService.singUp(req, res);
     }
 
-    async login(res, req) {
+    async login(req, res) {
         await UserService.login(req, res);
     }
 

@@ -18,11 +18,11 @@ module.exports = {
         allowNull:false,
         unique:true
       },
-      passwordHash:{
+      password_hash:{
         type:Sequelize.STRING,
         allowNull:false
       },
-      naversId:{
+      navers_id:{
         type:Sequelize.INTEGER,
         references:{
           model:{
@@ -32,7 +32,7 @@ module.exports = {
         },
         allowNull:true
       },
-      projectsId:{
+      projects_id:{
         type:Sequelize.INTEGER,
         references:{
           model:{
@@ -41,6 +41,14 @@ module.exports = {
           key: 'id'
         },
         allowNull:true
+      },
+      created_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DATE,
+        allowNull: false,
       },
     })
   },
