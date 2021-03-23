@@ -1,16 +1,17 @@
-import sequelize, { Sequelize } from 'sequelize';
-import databaseConfig from './connect';
+import Sequelize from 'sequelize';
+import User from '../models/User';
+import databaseConfig from '../config/database';
 
-const models = [];
+const models = [User];
 
-class Database{
-    constructor(){
+class Database {
+    constructor() {
         this.init();
     }
 
-    init(){
+    init() {
         this.connection = new Sequelize(databaseConfig);
-        models.map((model)=> model.init(this.connection));
+        models.map((model) => model.init(this.connection));
     }
 }
 

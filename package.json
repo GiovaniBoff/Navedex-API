@@ -6,7 +6,7 @@
   "author": "Giovani Boff <giovanisouza15@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon -L src/server.js",
     "dev:debug": "nodemon --inspect src/server.js",
     "migrate:up": "sequelize db:migrate",
     "migrate:down": "sequelize db:migrate:undo",
@@ -24,8 +24,10 @@
     "sucrase": "^3.17.1"
   },
   "dependencies": {
+    "@types/sequelize": "^4.28.9",
     "bcrypt": "^5.0.1",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",

@@ -1,4 +1,4 @@
-import Sequelize, { Model } from 'sequelize';
+const { Model } = require('sequelize');
 import bcrypt from 'bcryptjs';
 
 class User extends Model {
@@ -31,3 +31,5 @@ class User extends Model {
     }
 
 }
+
+export default User;
