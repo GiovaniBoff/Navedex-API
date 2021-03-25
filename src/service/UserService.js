@@ -1,53 +1,49 @@
-import UserModel from '../models/User';
+import userModel from '../models/User';
 import jwt from 'jsonwebtoken';
 import authConfig from '../config/auth';
 class UserService {
 
-    async singUp(req, res) {
+    async singUp(user) {
+            const { password, email, name } = user;
 
-        try {
-            const { password, email, name } = req.body;
-
-            const userExists = await UserModel.findOne({ where: { email:email } });
+            const userExists = await userModel.findOne({ where: { email } });
 
             if (userExists) {
-                return res.status(400).json({ error: 'User already exists' });
+                throw 'User already exists';
             }
-
-            await UserModel.create({
+            await userModel.create({
                 name,
                 email,
                 password
             })
-            return res.status(201).send();
-        } catch (err) {
-            res.status(401).json({ error: err });
-        }
-
     }
-    async login(req, res) {
-       
-        const { email, password } = req.body;
+    async login(user) {
+    
+        const { email, password } = user;
 
-        const user = await UserModel.findOne({ where: { email:email } });
+        const userFound = await userModel.findOne({ where: { email } });
 
         if (!user) {
-            return res.status(401).json({ error: 'User not found' });
+            throw 'User not found'
         }
 
-        const checkedPassword = await user.checkPassword(password);
+        const checkedPassword = await userFound.checkPassword(password);
 
         if (!checkedPassword) {
-            return res.status(401).json({ error: 'Password doesnt match' });
+            throw 'Password doesnt match';
         }
 
-        const { id } = user;
+        const { id } = userFound;
 
-        return res.json({
+        return JSON.stringify({
             token: jwt.sign({ id }, authConfig.secret, {
                 expiresIn: authConfig.expires
             })
         });
+
+    }
+
+    async update(userId,project){
 
     }
 }

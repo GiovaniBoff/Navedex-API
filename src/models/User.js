@@ -8,9 +8,7 @@ class User extends Model {
                 name: Sequelize.STRING,
                 email: Sequelize.STRING,
                 password: Sequelize.VIRTUAL,
-                password_hash: Sequelize.STRING,
-                navers_id: Sequelize.INTEGER,
-                projects_id: Sequelize.INTEGER
+                password_hash: Sequelize.STRING
             },
             {
                 sequelize

@@ -22,26 +22,6 @@ module.exports = {
         type:Sequelize.STRING,
         allowNull:false
       },
-      navers_id:{
-        type:Sequelize.INTEGER,
-        references:{
-          model:{
-            tableName:'navers'
-          },
-          key: 'id'
-        },
-        allowNull:true
-      },
-      projects_id:{
-        type:Sequelize.INTEGER,
-        references:{
-          model:{
-            tableName:'projects'
-          },
-          key: 'id'
-        },
-        allowNull:true
-      },
       created_at: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -49,7 +29,7 @@ module.exports = {
       updated_at: {
         type: Sequelize.DATE,
         allowNull: false,
-      },
+      }
     })
   },
 
