@@ -1,6 +1,6 @@
 import projectModel from '../models/Project';
 import userModel from '../models/User';
-
+import {Op} from 'sequelize'
 class ProjectService{
 
     async index(projectName,userId){
@@ -8,7 +8,15 @@ class ProjectService{
         const { name } = projectName;
         
         if(name){
-            const projects = await projectModel.findAll({ where:{ name }, attributes:['id','name'] });
+            const projects = await projectModel.findAll({
+                where:
+                { [Op.and]: [
+                        { name },
+                        { users_id: userId }
+                    ]
+                },
+                attributes: ['id', 'name']
+            });
 
             return JSON.stringify(projects);
         }
@@ -29,13 +37,11 @@ class ProjectService{
         
         const { name } = project;
         const { id } = await userModel.findByPk(userId );
-        console.log(id);
+
         const projectCreated = await projectModel.create({
             name,
             users_id:id
         });
-
-    
 
         if(!projectCreated){
             throw new Error().stack();

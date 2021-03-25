@@ -1,5 +1,4 @@
-import Sequelize,{Model} from 'sequelize';
-
+import Sequelize, { Model } from 'sequelize';
 
 class Naver extends Model{
     static init(sequelize){
@@ -18,5 +17,4 @@ class Naver extends Model{
         return this;
     }
 }
-
 export default Naver;
