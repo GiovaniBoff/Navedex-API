@@ -2,10 +2,10 @@ import Sequelize from 'sequelize';
 import User from '../models/User';
 import Project from '../models/Project';
 import NaverModel from '../models/Naver';
-import NaverProject from '../models/NaverProject'
+import NaversProject from '../models/NaversProject'
 import databaseConfig from './database';
 
-const models = [User,Project,NaverModel,NaverProject];
+const models = [User, Project, NaverModel, NaversProject];
 
 class Database {
     constructor() {

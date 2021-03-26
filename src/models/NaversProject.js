@@ -1,11 +1,11 @@
-import Sequelize,{Model} from 'sequelize';
+import Sequelize, { Model } from 'sequelize';
 
 
-class NaverProject extends Model{
-    static init(sequelize){
+class NaversProject extends Model {
+    static init(sequelize) {
         super.init(
             {
-                users_id: Sequelize.INTEGER,
+                navers_id: Sequelize.INTEGER,
                 projects_id: Sequelize.INTEGER
             },
             {
@@ -16,4 +16,4 @@ class NaverProject extends Model{
     }
 }
 
-export default NaverProject;
+export default NaversProject;

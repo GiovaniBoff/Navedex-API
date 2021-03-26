@@ -1,70 +1,73 @@
 import naverModel from '../models/Naver';
 import projectModel from '../models/Project';
 import userModel from '../models/User';
-import naverProjectModel from '../models/NaverProject';
-import {Op} from 'sequelize'
+import naverProjectModel from '../models/NaversProject';
+import { Op } from 'sequelize'
 
-class NaverService{
+class NaverService {
 
-    async index(naverQuery, userId) {
+    async index(naverQuery, users_id) {
 
-        if (naverQuery) {
-            const { name, addmissionDate, jobRole } = naverQuery;
-            console.log(naverModel.findAll({
-                where: {
-                    [Op.or]: [
-                        { name: name = undefined ? '' : name },
-                        { admission_date: addmissionDate = undefined ?  '': addmissionDate },
-                        { job_role:jobRole = undefined ? '' : jobRole }
-                    ],
-                    [Op.and]: [
-                        { users_id: userId }
-                    ]
-                },
-                attributes: ['id', 'name','birthdate','admission_date','job_role']
-            }))
-            const navers = await naverModel.findAll({
-                where: {
-                    [Op.or]: [
-                        { name },
-                        { admission_date: addmissionDate },
-                        { job_role:jobRole }
-                    ],
-                    [Op.and]: [
-                        { users_id: userId }
-                    ]
-                },
-                attributes: ['id', 'name','birthdate','admission_date','job_role']
-            });
-
-            return JSON.stringify(navers);
+        const queries = [];
+        const configQuery = {
+            where: {},
+            attributes: ['id', 'name', 'birthdate', 'admission_date', 'job_role'],
         }
 
+        if (naverQuery != undefined) {
+            const { name, addmissionDate, jobRole } = naverQuery;
 
-        const naver = await naverModel.findAll({ where: { users_id: userId }, attributes: ['id', 'name', 'birthdate', 'admission_date', 'job_role'] });
-        
+            if (name) {
+                queries.push({ name })
+            }
+            if (addmissionDate) {
+                queries.push({ admission_date: addmissionDate })
+            }
+            if (jobRole) {
+                queries.push({ job_role: jobRole });
+            }
+
+            configQuery.where[Op.and] = [
+                { users_id },
+                queries
+            ];
+
+
+            const navers = await naverModel.findAll(configQuery);
+
+            return navers;
+        }
+
+        configQuery.where = { users_id }
+
+        const naver = await naverModel.findAll(configQuery);
+
         if (!naver) {
             throw new Error().stack();
         }
 
-        return JSON.stringify(naver)
+        return naver;
     }
 
-    async show(req,res){
+    async show(req, res) {
         await this;
     }
 
     async store(naver, userId) {
-        
+
         const { id } = await userModel.findByPk(userId);
+        const { name, birthdate, admission_date, job_role, project } = naver;
+        const queries = [];
 
-        const { name,birthdate,admission_date,job_role,project } = naver;
-        
-        console.log(...project);
+        project.map((p) => {
+            queries.push({ id: p });
+        })
 
-        const projectExists = await projectModel.findAll({where:{id:project}});
-
-        console.log(projectExists.id);
+        const projectExists = await projectModel.findAll({
+            where: {
+                [Op.or]: queries
+            }
+        });
 
         if (!projectExists) {
             throw new Error('Project not exists');
@@ -75,28 +78,36 @@ class NaverService{
             birthdate,
             admission_date,
             job_role,
-            users_id:id
+            users_id: id
         });
 
-        if(!naverCreated){
+        if (!naverCreated) {
             throw new Error().stack();
         }
 
-        
+        const naverProjects = []
 
-        const naverProjectCreated = await naverProjectModel.create({
-            navers_id: naverCreated.id,
-            projects_id: projectExists.id
-        });
+        projectExists.map((project) => {
+            naverProjects.push(
+                {
+                    navers_id: naverCreated.id,
+                    projects_id: project.id
+                }
+            )
+        })
 
-        if(!naverProjectCreated){
+        const naverProjectCreated = await naverProjectModel.bulkCreate(naverProjects);
+
+        if (!naverProjectCreated) {
             throw new Error().stack();
         }
     }
 
-    async update(req,res){
+    async update(req, res) {
         await this;
     }
+
+
 
 }
 

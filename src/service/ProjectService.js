@@ -1,16 +1,17 @@
 import projectModel from '../models/Project';
 import userModel from '../models/User';
-import {Op} from 'sequelize'
-class ProjectService{
+import { Op } from 'sequelize'
+class ProjectService {
 
-    async index(projectName,userId){
+    async index(projectName, userId) {
 
         const { name } = projectName;
-        
-        if(name){
+
+        if (name) {
             const projects = await projectModel.findAll({
                 where:
-                { [Op.and]: [
+                {
+                    [Op.and]: [
                         { name },
                         { users_id: userId }
                     ]
@@ -26,31 +27,32 @@ class ProjectService{
         if (!project) {
             throw new Error().stack();
         }
-            return JSON.stringify(project)
+        return JSON.stringify(project)
     }
 
-    async show(req,res){
+    async show(req, res) {
         await this;
     }
 
     async store(project, userId) {
-        
+
         const { name } = project;
-        const { id } = await userModel.findByPk(userId );
+        const { id } = await userModel.findByPk(userId);
 
         const projectCreated = await projectModel.create({
             name,
-            users_id:id
+            users_id: id
         });
 
-        if(!projectCreated){
+        if (!projectCreated) {
             throw new Error().stack();
         }
     }
 
-    async update(req,res){
+    async update(req, res) {
         await this;
     }
+
 
 }
 

@@ -4,21 +4,21 @@ import authConfig from '../config/auth';
 class UserService {
 
     async singUp(user) {
-            const { password, email, name } = user;
+        const { password, email, name } = user;
 
-            const userExists = await userModel.findOne({ where: { email } });
+        const userExists = await userModel.findOne({ where: { email } });
 
-            if (userExists) {
-                throw 'User already exists';
-            }
-            await userModel.create({
-                name,
-                email,
-                password
-            })
+        if (userExists) {
+            throw 'User already exists';
+        }
+        await userModel.create({
+            name,
+            email,
+            password
+        })
     }
     async login(user) {
-    
+
         const { email, password } = user;
 
         const userFound = await userModel.findOne({ where: { email } });
@@ -43,7 +43,7 @@ class UserService {
 
     }
 
-    async update(userId,project){
+    async update(userId, project) {
 
     }
 }
