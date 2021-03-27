@@ -156,8 +156,12 @@ class NaverService {
 
     }
 
-    async deleteNaver(naver) {
+    async deleteNaver(naverId, userId) {
+        const naver = await projectModel.findOne({ where: { users_id: userId, id: naverId } });
 
+        await naverProjectModel.destroy({ where: { navers_id: naverId } });
+
+        naver.destroy();
     }
 
 

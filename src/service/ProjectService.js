@@ -3,6 +3,7 @@ import naverModel from '../models/Naver';
 import naverProjectModel from '../models/NaversProject';
 import userModel from '../models/User';
 import { Op } from 'sequelize'
+import { Where } from 'sequelize/types/lib/utils';
 class ProjectService {
 
     async index(projectName, userId) {
@@ -126,7 +127,18 @@ class ProjectService {
         await this;
     }
 
-    async deleteProject(project) { }
+    async deleteProject(projectId, userId) {
+        const project = await projectModel.findOne({ where: { users_id: userId, id: projectId } });
+
+
+        await naverProjectModel.destroy({ where: { project_id: projectId } });
+
+        project.destroy()
+
+
+
+
+    }
 
 
 }

@@ -2,32 +2,33 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    queryInterface.createTable('navers_projects',{
-      id:{
-        type:Sequelize.INTEGER,
+    queryInterface.createTable('navers_projects', {
+      id: {
+        type: Sequelize.INTEGER,
         allowNull: false,
         autoIncrement: true,
-        primaryKey:true
+        primaryKey: true
       },
-      navers_id:{
-        type:Sequelize.INTEGER,
-        references:{
-          model:{
-            tableName:'navers'
+      navers_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'navers'
           },
           key: 'id'
         },
-        allowNull:false
+        allowNull: false,
+
       },
-      projects_id:{
-        type:Sequelize.INTEGER,
-        references:{
-          model:{
-            tableName:'projects'
+      projects_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: {
+            tableName: 'projects'
           },
           key: 'id'
         },
-        allowNull:false
+        allowNull: false
       },
       created_at: {
         type: Sequelize.DATE,
@@ -37,7 +38,7 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
-      
+
 
 
     })
