@@ -30,10 +30,17 @@ class NaverController {
         }
     }
     async show(req, res) {
-        const naverId = req.params;
-
-        naverService(naverId);
+        try {
+            const naverId = req.params;
+            const naver = naverService(naverId);
+            res.status(200).json(naver);
+        } catch (error) {
+            res.status(400).json({ error });
+        }
     }
+
+    async update(req, res) { }
+    async delete(req, res) { }
 }
 
 export default new NaverController();

@@ -32,9 +32,37 @@ class ProjectService {
         return JSON.stringify(project)
     }
 
-    async show(req, res) {
-        await this;
+    async show(projectId) {
+        const projectFound = await naverModel.findByPk(projectId);
+        if (!projectFound) {
+            throw 'Project not found';
+        }
+        const naverProjectFound = await naverProjectModel.findAll({ where: { projects_id: projectId } });
+
+        const naversQuery = [];
+
+        naverProjectFound.map((n) => {
+            naversQuery.push({ id: p.projects_id });
+        });
+
+        const navers = await projectModel.findAll({
+            where: {
+                [Op.or]: naversQuery
+            },
+            attributes: ['id', 'name', 'birthdate', 'addmissionDate', 'jobRole']
+        })
+
+        const { id, name, } = projectFound;
+
+        const project = {
+            id,
+            name,
+            navers
+        }
+
+        return project;
     }
+
 
     async store(project, userId) {
 
@@ -42,8 +70,6 @@ class ProjectService {
         const { id } = await userModel.findByPk(userId);
 
         const queries = [];
-
-
 
         const projectCreated = await projectModel.create({
             name,
@@ -96,9 +122,11 @@ class ProjectService {
         return projectCreated;
     }
 
-    async update(req, res) {
+    async update(oldProject, newProject) {
         await this;
     }
+
+    async deleteProject(project) { }
 
 
 }

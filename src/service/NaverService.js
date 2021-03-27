@@ -49,9 +49,41 @@ class NaverService {
         return naver;
     }
 
-    async show(naver) {
-        const naverFound = await naverModel.findByPk(naver);
+    async show(naverId) {
+        const naverFound = await naverModel.findByPk(naverId);
+        if (!naverFound) {
+            throw 'Naver not found';
+        }
+        const naverProjectFound = await naverProjectModel.findAll({ where: { navers_id: naverId } });
 
+        if (!naverProjectFound) {
+            throw `The naver don't have projects`;
+        }
+
+        const projectsQuery = [];
+
+        naverProjectFound.map((p) => {
+            projectsQuery.push({ id: p.projects_id });
+        });
+
+        const projects = await projectModel.findAll({
+            where: {
+                [Op.or]: projectsQuery
+            },
+            attributes: ['id', 'name']
+        })
+
+        const { id, name, birthdate, addmissionDate, jobRole } = naverFound;
+
+        const naver = {
+            id,
+            name,
+            birthdate,
+            addmissionDate,
+            jobRole,
+            projects
+        }
+        return naver
     }
 
     async store(naver, userId) {
@@ -59,8 +91,6 @@ class NaverService {
         const { id } = await userModel.findByPk(userId);
         const { name, birthdate, admission_date, job_role, project } = naver;
         const queries = [];
-
-
 
         const naverCreated = await naverModel.create({
             name,
@@ -122,10 +152,13 @@ class NaverService {
 
     }
 
-    async update(req, res) {
-        await this;
+    async update(oldNaver, newNaver) {
+
     }
 
+    async deleteNaver(naver) {
+
+    }
 
 
 }
