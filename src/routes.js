@@ -15,19 +15,21 @@ routes.use(authMiddleware);
 
 routes.post('/projects', projectController.store);
 routes.get('/projects', projectController.index);
-//routes.get('projects/:id', projectController.show);
-//routes.update('navers',naverController.update);
-//routes.delete(/navers/:id,naverController.delete)
+routes.get('/projects/:id', projectController.show);
+
+routes.patch('/projects', projectController.update);
+
+routes.delete('/projects/:id', projectController.delete);
+
 
 routes.post('/navers', naverController.store);
+
 routes.get('/navers', naverController.index);
-//routes.get('navers/:id', naverController.show);
-//routes.update('navers',naverController.update);
-//routes.delete(/navers/:id,naverController.delete)
+routes.get('/navers/:id', naverController.show);
 
+routes.patch('/navers', naverController.update);
 
-routes.get('/', async (req, res) => {
-    await res.send('Hello World')
-})
+routes.delete('/navers/:id', naverController.delete);
+
 
 export default routes;

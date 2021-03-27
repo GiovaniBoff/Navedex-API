@@ -3,7 +3,7 @@ import naverModel from '../models/Naver';
 import naverProjectModel from '../models/NaversProject';
 import userModel from '../models/User';
 import { Op } from 'sequelize'
-import { Where } from 'sequelize/types/lib/utils';
+
 class ProjectService {
 
     async index(projectName, userId) {
@@ -33,27 +33,28 @@ class ProjectService {
         return JSON.stringify(project)
     }
 
-    async show(projectId) {
-        const projectFound = await naverModel.findByPk(projectId);
+    async show(projectId,users_id) {
+        const projectFound = await projectModel.findByPk(projectId, { where: { users_id } });
+        
         if (!projectFound) {
-            throw 'Project not found';
+            throw new Error();
         }
-        const naverProjectFound = await naverProjectModel.findAll({ where: { projects_id: projectId } });
+        const naverProjectFound = await naverProjectModel.findAll({ where: { projects_id: projectFound.id } });
 
         const naversQuery = [];
 
         naverProjectFound.map((n) => {
-            naversQuery.push({ id: p.projects_id });
+            naversQuery.push({ id: n.navers_id });
         });
 
-        const navers = await projectModel.findAll({
+        const navers = await naverModel.findAll({
             where: {
                 [Op.or]: naversQuery
             },
-            attributes: ['id', 'name', 'birthdate', 'addmissionDate', 'jobRole']
+            attributes: ['id', 'name', 'birthdate', 'admission_date', 'job_role']
         })
 
-        const { id, name, } = projectFound;
+        const { id, name } = projectFound;
 
         const project = {
             id,
@@ -123,21 +124,76 @@ class ProjectService {
         return projectCreated;
     }
 
-    async update(oldProject, newProject) {
-        await this;
+    async update(project,userId) {
+        const { id, name, navers } = project;
+        const updates = [];
+
+        const projectFound = await projectModel.findByPk(id, { where: { users_id: userId } });
+
+        if (!projectFound) {
+            throw new Error('Project not found');
+        }
+
+        if (name) {
+            updates.push({ name });
+        }
+
+        await projectFound.update(...updates);
+
+        const queries = [];
+        const naverProjects = [];
+
+        if (navers) {
+            
+            navers.map((n) => {
+                queries.push({ id: n });
+            })
+
+            const naverExists = await naverModel.findAll({
+                where: {
+                    [Op.or]: queries
+                }
+            });
+
+            if (!naverExists) {
+                throw new Error('Naver not exists');
+            }
+            naverExists.map((naver) => {
+                naverProjects.push(
+                    {
+                        navers_id: naver.id,
+                        projects_id: id
+                    }
+                )
+            });
+
+            naverProjects.map(async (item) => {
+                await naverProjectModel.findOrCreate({
+                    where: item
+                });
+            });
+
+        }
+
+        return await this.show(id, userId);
+
+
     }
 
-    async deleteProject(projectId, userId) {
+    async delete(projectId, userId) {
         const project = await projectModel.findOne({ where: { users_id: userId, id: projectId } });
 
+        if (!project) {
+            throw new Error('Project already deleted');
+        }
 
-        await naverProjectModel.destroy({ where: { project_id: projectId } });
+        await naverProjectModel.destroy({ where: { projects_id: projectId } });
 
         project.destroy()
 
-
-
-
+        return {
+            message: 'Project sucessfully deleted'
+        }
     }
 
 

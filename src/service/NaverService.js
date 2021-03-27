@@ -2,7 +2,7 @@ import naverModel from '../models/Naver';
 import projectModel from '../models/Project';
 import userModel from '../models/User';
 import naverProjectModel from '../models/NaversProject';
-import { Op } from 'sequelize'
+import { json, Op, where } from 'sequelize'
 
 class NaverService {
 
@@ -49,17 +49,20 @@ class NaverService {
         return naver;
     }
 
-    async show(naverId) {
-        const naverFound = await naverModel.findByPk(naverId);
+    async show(naverId,user_id) {
+        const naverFound = await naverModel.findByPk(naverId,{where:{user_id}});
+
         if (!naverFound) {
-            throw 'Naver not found';
+            throw Error('Naver not found');
         }
-        const naverProjectFound = await naverProjectModel.findAll({ where: { navers_id: naverId } });
+        
+        const naverProjectFound = await naverProjectModel.findAll({ where: { navers_id: naverFound.id } });
 
         if (!naverProjectFound) {
-            throw `The naver don't have projects`;
-        }
 
+            throw new Error('Naver projects not found')
+        }
+        
         const projectsQuery = [];
 
         naverProjectFound.map((p) => {
@@ -73,14 +76,14 @@ class NaverService {
             attributes: ['id', 'name']
         })
 
-        const { id, name, birthdate, addmissionDate, jobRole } = naverFound;
-
+        const { id, name, birthdate, admission_date, job_role } = naverFound;
+        
         const naver = {
             id,
             name,
             birthdate,
-            addmissionDate,
-            jobRole,
+            admission_date,
+            job_role,
             projects
         }
         return naver
@@ -89,7 +92,7 @@ class NaverService {
     async store(naver, userId) {
 
         const { id } = await userModel.findByPk(userId);
-        const { name, birthdate, admission_date, job_role, project } = naver;
+        const { name, birthdate, admission_date, job_role, projects } = naver;
         const queries = [];
 
         const naverCreated = await naverModel.create({
@@ -105,9 +108,9 @@ class NaverService {
         }
 
         const naverProjects = []
-        if (project) {
+        if (projects) {
 
-            project.map((p) => {
+            projects.map((p) => {
                 queries.push({ id: p });
             })
 
@@ -140,7 +143,7 @@ class NaverService {
                 birthdate,
                 admission_date,
                 job_role,
-                project
+                projects
             }
 
             return naverWithProject;
@@ -152,18 +155,87 @@ class NaverService {
 
     }
 
-    async update(oldNaver, newNaver) {
+    async update(naver, userId) {
+
+        const { id, name, birthdate, admission_date, job_role, projects } = naver;
+        const updates = [];
+
+        const naverFound = await naverModel.findByPk(id,{where:{users_id: userId}})
+
+        if (!naverFound) {
+            throw new Error('Naver not found');
+        }
+
+        if (name) {
+            updates.push({name})
+        }
+        if (birthdate) {
+            updates.push({birthdate: Date.parse(birthdate)})
+        }
+
+        if (admission_date) {
+            updates.push({admission_date: Date.parse(admission_date)})
+        }
+
+        if (job_role) {
+            updates.push({ job_role });
+        }
+
+        await naverFound.update(...updates);
+        
+        const queries = [];
+        const naverProjects = [];
+        if (projects) {
+
+            projects.map((p) => {
+                queries.push({ id: p });
+            })
+
+            const projectExists = await projectModel.findAll({
+                where: {
+                    [Op.or]: queries
+                }
+            });
+
+            if (!projectExists) {
+                throw new Error('Project not exists');
+            }
+            projectExists.map((project) => {
+                naverProjects.push(
+                    {
+                        navers_id: id,
+                        projects_id: project.id
+                    }
+                )
+            });
+
+            naverProjects.map(async (item) => {
+                await naverProjectModel.findOrCreate({
+                    where: item
+                })
+            })
+        }
+
+        return await this.show(id, userId);
 
     }
 
     async deleteNaver(naverId, userId) {
-        const naver = await projectModel.findOne({ where: { users_id: userId, id: naverId } });
+
+        const naver = await naverModel.findOne({ where: { users_id: userId, id: naverId } });
+
+        if (!naver) {
+            throw new Error('Naver already deleted');
+        }
 
         await naverProjectModel.destroy({ where: { navers_id: naverId } });
 
         naver.destroy();
-    }
 
+        return {
+            message: 'Naver sucessfully deleted'
+        }
+    }
 
 }
 
