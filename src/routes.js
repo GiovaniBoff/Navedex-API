@@ -13,11 +13,17 @@ routes.post('/login', userController.login);
 
 routes.use(authMiddleware);
 
-routes.post('/projects/store', projectController.store);
-routes.get('/projects/index', projectController.index);
+routes.post('/projects', projectController.store);
+routes.get('/projects', projectController.index);
+//routes.get('projects/:id', projectController.show);
+//routes.update('navers',naverController.update);
+//routes.delete(/navers/:id,naverController.delete)
 
-routes.post('/navers/store', naverController.store);
-routes.get('/navers/index', naverController.index);
+routes.post('/navers', naverController.store);
+routes.get('/navers', naverController.index);
+//routes.get('navers/:id', naverController.show);
+//routes.update('navers',naverController.update);
+//routes.delete(/navers/:id,naverController.delete)
 
 
 routes.get('/', async (req, res) => {

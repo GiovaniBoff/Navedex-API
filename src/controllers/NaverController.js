@@ -23,11 +23,16 @@ class NaverController {
 
             const userCreated = await naverService.store(naver, userId);
 
-            res.status(200).send();
+            res.status(200).json(userCreated);
 
         } catch (error) {
             res.status(400).json({ error });
         }
+    }
+    async show(req, res) {
+        const naverId = req.params;
+
+        naverService(naverId);
     }
 }
 

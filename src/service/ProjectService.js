@@ -1,4 +1,6 @@
 import projectModel from '../models/Project';
+import naverModel from '../models/Naver';
+import naverProjectModel from '../models/NaversProject';
 import userModel from '../models/User';
 import { Op } from 'sequelize'
 class ProjectService {
@@ -36,8 +38,12 @@ class ProjectService {
 
     async store(project, userId) {
 
-        const { name } = project;
+        const { name, navers } = project;
         const { id } = await userModel.findByPk(userId);
+
+        const queries = [];
+
+
 
         const projectCreated = await projectModel.create({
             name,
@@ -47,6 +53,47 @@ class ProjectService {
         if (!projectCreated) {
             throw new Error().stack();
         }
+        const naverProjects = []
+        if (navers) {
+
+            navers.map((n) => {
+                queries.push({ id: n });
+            })
+
+            const naverExists = await nave.findAll({
+                where: {
+                    [Op.or]: queries
+                }
+            });
+
+            if (!naverExists) {
+                throw new Error('Naver not exists');
+            }
+            naverExists.map((naver) => {
+                naverProjects.push(
+                    {
+                        navers_id: naver.id,
+                        projects_id: projectCreated.id
+                    }
+                )
+            });
+
+            const naverProjectCreated = await naverProjectModel.bulkCreate(naverProjects);
+
+            if (!naverProjectCreated) {
+                throw new Error().stack();
+            }
+
+            const naverWithProject = {
+                name,
+                navers
+            }
+
+            return naverWithProject;
+
+        }
+
+        return projectCreated;
     }
 
     async update(req, res) {
