@@ -10,8 +10,8 @@ class UserControler {
 
             res.status(201).send();
 
-        }catch (error){
-            res.status(400).json({ error });
+        }catch (e){
+            res.status(400).json({ error: e.message });
         }
         
     }
@@ -20,12 +20,12 @@ class UserControler {
         try {
             const user = req.body;
 
-            const json = await userService.login(user);
+            const token = await userService.login(user);
             
-            res.status(200).json(JSON.parse(json));
+            res.status(200).json(token);
 
-        } catch (error) {
-            res.status(400).json({ error });
+        } catch (e) {
+            res.status(400).json({ error: e.message });
         }
         
     }

@@ -9,7 +9,7 @@ class UserService {
         const userExists = await userModel.findOne({ where: { email } });
 
         if (userExists) {
-            throw 'User already exists';
+            throw new Error('User already exists');
         }
         await userModel.create({
             name,
@@ -24,26 +24,22 @@ class UserService {
         const userFound = await userModel.findOne({ where: { email } });
 
         if (!user) {
-            throw 'User not found'
+            throw new Error('User not found');
         }
 
         const checkedPassword = await userFound.checkPassword(password);
 
         if (!checkedPassword) {
-            throw 'Password doesnt match';
+            throw new Error('Password doesnt match');
         }
 
         const { id } = userFound;
 
-        return JSON.stringify({
+        return {
             token: jwt.sign({ id }, authConfig.secret, {
                 expiresIn: authConfig.expires
             })
-        });
-
-    }
-
-    async update(userId, project) {
+        }
 
     }
 }

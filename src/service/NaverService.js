@@ -150,7 +150,12 @@ class NaverService {
 
         }
 
-        return naverCreated;
+        return {
+            name,
+            birthdate,
+            admission_date,
+            job_role
+        }
 
 
     }

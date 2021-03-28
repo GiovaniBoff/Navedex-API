@@ -9,7 +9,7 @@ class ProjectController{
 
             const project =  await projectService.index(projectName,userId);
 
-            res.status(200).send(JSON.parse(project));
+            res.status(200).json(project);
 
         } catch (e) {
             res.status(400).json({ error: e.message });
@@ -21,9 +21,9 @@ class ProjectController{
             
             const project = req.body;
 
-            await projectService.store(project, userId);
+            const projectCreated = await projectService.store(project, userId);
 
-            res.status(200).send();
+            res.status(200).json(projectCreated);
         } catch (e) {
             res.status(400).json({ error: e.message });
         }

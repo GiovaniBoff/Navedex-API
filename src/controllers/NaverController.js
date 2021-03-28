@@ -56,7 +56,7 @@ class NaverController {
             const naverId = req.params.id;
             const userId = req.userId;
 
-            const naver = naverService.deleteNaver(naverId,userId);
+            const naver = await naverService.deleteNaver(naverId,userId);
             res.status(200).json(naver);
         } catch (e) {
             res.status(400).json({ error: e.message });

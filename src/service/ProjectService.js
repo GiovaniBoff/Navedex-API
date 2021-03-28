@@ -6,7 +6,7 @@ import { Op } from 'sequelize'
 
 class ProjectService {
 
-    async index(projectName, userId) {
+    async index(projectName, users_id) {
 
         const { name } = projectName;
 
@@ -16,7 +16,7 @@ class ProjectService {
                 {
                     [Op.and]: [
                         { name },
-                        { users_id: userId }
+                        { users_id }
                     ]
                 },
                 attributes: ['id', 'name']
@@ -25,12 +25,12 @@ class ProjectService {
             return JSON.stringify(projects);
         }
 
-        const project = await projectModel.findAll({ where: { users_id: userId }, attributes: ['id', 'name'] });
+        const project = await projectModel.findAll({ where: { users_id }, attributes: ['id', 'name'] });
 
         if (!project) {
             throw new Error().stack();
         }
-        return JSON.stringify(project)
+        return project
     }
 
     async show(projectId,users_id) {
@@ -88,7 +88,7 @@ class ProjectService {
                 queries.push({ id: n });
             })
 
-            const naverExists = await nave.findAll({
+            const naverExists = await naverModel.findAll({
                 where: {
                     [Op.or]: queries
                 }
@@ -113,7 +113,8 @@ class ProjectService {
             }
 
             const naverWithProject = {
-                name,
+                id: projectCreated.id,
+                name: projectCreated.name,
                 navers
             }
 
@@ -121,14 +122,17 @@ class ProjectService {
 
         }
 
-        return projectCreated;
+        return {
+            id: projectCreated.id,
+            name: projectCreated.name
+        }
     }
 
-    async update(project,userId) {
+    async update(project,users_id) {
         const { id, name, navers } = project;
         const updates = [];
 
-        const projectFound = await projectModel.findByPk(id, { where: { users_id: userId } });
+        const projectFound = await projectModel.findByPk(id, { where: { users_id } });
 
         if (!projectFound) {
             throw new Error('Project not found');
@@ -175,19 +179,19 @@ class ProjectService {
 
         }
 
-        return await this.show(id, userId);
+        return await this.show(id, users_id);
 
 
     }
 
-    async delete(projectId, userId) {
-        const project = await projectModel.findOne({ where: { users_id: userId, id: projectId } });
+    async delete(projectId, users_id) {
+        const project = await projectModel.findOne({ where: { users_id, id: projectId } });
 
         if (!project) {
             throw new Error('Project already deleted');
         }
 
-        await naverProjectModel.destroy({ where: { projects_id: projectId } });
+        await naverProjectModel.destroy({ where: { projects_id: project.id } });
 
         project.destroy()
 
@@ -195,8 +199,6 @@ class ProjectService {
             message: 'Project sucessfully deleted'
         }
     }
-
-
 }
 
 export default new ProjectService();
