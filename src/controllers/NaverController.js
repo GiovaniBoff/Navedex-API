@@ -41,22 +41,22 @@ class NaverController {
 
     async update(req, res) {
         try {
-            const naverUpdate = req.body;          
+            const naverUpdate = req.body;
             const userId = req.userId;
 
-            const naver = await naverService.update(naverUpdate,userId);
+            const naver = await naverService.update(naverUpdate, userId);
             res.status(200).json(naver);
         } catch (e) {
             res.status(400).json({ error: e.message });
         }
-        
+
     }
     async delete(req, res) {
         try {
             const naverId = req.params.id;
             const userId = req.userId;
 
-            const naver = await naverService.deleteNaver(naverId,userId);
+            const naver = await naverService.deleteNaver(naverId, userId);
             res.status(200).json(naver);
         } catch (e) {
             res.status(400).json({ error: e.message });

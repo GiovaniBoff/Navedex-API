@@ -33,9 +33,9 @@ class ProjectService {
         return project
     }
 
-    async show(projectId,users_id) {
+    async show(projectId, users_id) {
         const projectFound = await projectModel.findByPk(projectId, { where: { users_id } });
-        
+
         if (!projectFound) {
             throw new Error();
         }
@@ -128,7 +128,7 @@ class ProjectService {
         }
     }
 
-    async update(project,users_id) {
+    async update(project, users_id) {
         const { id, name, navers } = project;
         const updates = [];
 
@@ -148,7 +148,7 @@ class ProjectService {
         const naverProjects = [];
 
         if (navers) {
-            
+
             navers.map((n) => {
                 queries.push({ id: n });
             })

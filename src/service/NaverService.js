@@ -2,7 +2,7 @@ import naverModel from '../models/Naver';
 import projectModel from '../models/Project';
 import userModel from '../models/User';
 import naverProjectModel from '../models/NaversProject';
-import { json, Op, where } from 'sequelize'
+import { Op } from 'sequelize'
 
 class NaverService {
 
@@ -49,20 +49,20 @@ class NaverService {
         return naver;
     }
 
-    async show(naverId,user_id) {
-        const naverFound = await naverModel.findByPk(naverId,{where:{user_id}});
+    async show(naverId, user_id) {
+        const naverFound = await naverModel.findByPk(naverId, { where: { user_id } });
 
         if (!naverFound) {
             throw Error('Naver not found');
         }
-        
+
         const naverProjectFound = await naverProjectModel.findAll({ where: { navers_id: naverFound.id } });
 
         if (!naverProjectFound) {
 
             throw new Error('Naver projects not found')
         }
-        
+
         const projectsQuery = [];
 
         naverProjectFound.map((p) => {
@@ -77,7 +77,7 @@ class NaverService {
         })
 
         const { id, name, birthdate, admission_date, job_role } = naverFound;
-        
+
         const naver = {
             id,
             name,
@@ -165,21 +165,21 @@ class NaverService {
         const { id, name, birthdate, admission_date, job_role, projects } = naver;
         const updates = [];
 
-        const naverFound = await naverModel.findByPk(id,{where:{users_id: userId}})
+        const naverFound = await naverModel.findByPk(id, { where: { users_id: userId } })
 
         if (!naverFound) {
             throw new Error('Naver not found');
         }
 
         if (name) {
-            updates.push({name})
+            updates.push({ name })
         }
         if (birthdate) {
-            updates.push({birthdate: Date.parse(birthdate)})
+            updates.push({ birthdate: Date.parse(birthdate) })
         }
 
         if (admission_date) {
-            updates.push({admission_date: Date.parse(admission_date)})
+            updates.push({ admission_date: Date.parse(admission_date) })
         }
 
         if (job_role) {
@@ -187,7 +187,7 @@ class NaverService {
         }
 
         await naverFound.update(...updates);
-        
+
         const queries = [];
         const naverProjects = [];
         if (projects) {

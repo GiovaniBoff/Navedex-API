@@ -10,10 +10,10 @@ class UserControler {
 
             res.status(201).send();
 
-        }catch (e){
+        } catch (e) {
             res.status(400).json({ error: e.message });
         }
-        
+
     }
 
     async login(req, res) {
@@ -21,13 +21,13 @@ class UserControler {
             const user = req.body;
 
             const token = await userService.login(user);
-            
+
             res.status(200).json(token);
 
         } catch (e) {
             res.status(400).json({ error: e.message });
         }
-        
+
     }
 }
 

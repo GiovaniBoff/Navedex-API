@@ -1,13 +1,14 @@
 import projectService from '../service/ProjectService';
 
-class ProjectController{
+class ProjectController {
+
 
     async index(req, res) {
         try {
             const projectName = req.query;
             const userId = req.userId;
 
-            const project =  await projectService.index(projectName,userId);
+            const project = await projectService.index(projectName, userId);
 
             res.status(200).json(project);
 
@@ -18,7 +19,7 @@ class ProjectController{
     async store(req, res) {
         try {
             const userId = req.userId;
-            
+
             const project = req.body;
 
             const projectCreated = await projectService.store(project, userId);
@@ -33,7 +34,7 @@ class ProjectController{
             const projectId = req.params.id;
             const userId = req.userId;
             const project = await projectService.show(projectId, userId);
-      
+
             res.status(200).json(project);
         } catch (e) {
             res.status(400).json({ error: e.message });
@@ -43,7 +44,7 @@ class ProjectController{
         const projectId = req.params.id;
         const userId = req.userId;
         try {
-            const project = await projectService.delete(projectId,userId);
+            const project = await projectService.delete(projectId, userId);
             res.status(200).json(project);
         } catch (e) {
             res.status(400).json({ error: e.message });
@@ -51,15 +52,15 @@ class ProjectController{
     }
     async update(req, res) {
         try {
-            const projectUpdate = req.body;          
+            const projectUpdate = req.body;
             const userId = req.userId;
 
-            const project = await projectService.update(projectUpdate,userId);
+            const project = await projectService.update(projectUpdate, userId);
             res.status(200).json(project);
         } catch (e) {
             res.status(400).json({ error: e.message });
         }
-        
+
     }
 
 }

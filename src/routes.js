@@ -6,8 +6,6 @@ import { Router } from 'express';
 
 const routes = new Router();
 
-
-
 routes.post('/singup', userController.singUp);
 routes.post('/login', userController.login);
 
