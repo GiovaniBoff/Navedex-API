@@ -252,6 +252,18 @@ Pode-se utilizar os seguintes filtros de query opcionais na requisição: `?name
 Realizando um `PATCH - {base}` ira atualizar o naver, é importante sempre informar no corpo da requisição o `id` do naver e os dados que devem ser atualizados, no caso dos navers é possivel atualizar o nome,
 o aniversário, a data de admissão, o cargo e os projetos.
 
-## Arquivos para testes no postman
+## Arquivos para testes no Postman
 
-Os arquivos json para testes no postman estão disponiveis na pasta `Doc` do projeto, basta importa-los no postman que voce encotrara exemplos das requisições.
+#### Importante
+- [Postman](https://www.postman.com/downloads/)
+
+Os arquivos json para testes no `Postman` estão disponiveis na pasta `Doc` do projeto. Aperte CRTL+O para importar os arquivos no seu aplicativo. 
+
+Sao dois aquivos:
+ - `Navedex-api Enviroment.postman_environment.json` - Arquivo com as variaveis de ambiente.
+ - `Navedex-API.postman_collection.json` - Arquivo com as rotas e exemplos de requisições.
+
+
+
+
+
