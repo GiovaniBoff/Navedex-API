@@ -51,7 +51,7 @@ class ProjectService {
             where: {
                 [Op.or]: naversQuery
             },
-            attributes: ['id', 'name', 'birthdate', 'admission_date', 'job_role']
+            attributes: ['id', 'name', 'job_role','birthdate', 'admission_date']
         })
 
         const { id, name } = projectFound;

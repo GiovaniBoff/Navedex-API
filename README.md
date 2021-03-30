@@ -20,63 +20,221 @@
 
 ## Configuração
 
-### Instalando dependencias
+### Instalando dependências
 
-`yarn` ou `npm install`
+O package manager escolhido para utilização neste projeto foi o Yarn, para incluir suas dependências, pode-se utilizar o comando:
+
+    yarn install /* ou apenas yarn */
 
 ### Rodando o server
 
-Para rodar a api, é necesario subir o container com o bancode de dados e rodar as migrations do sequelize, conforme descrito abaixo:
+Para executar a aplicação, é necessário subir o container com o banco de de dados e rodar as migrações do `sequelize`, conforme descrito abaixo:
 
-Para subir o container com o banco de dados:
+#### Subindo o container
 
-    `sudo docker-compose up -d` ou `docker-compose up -d`
+    sudo docker-compose up -d ou docker-compose up -d
 
-Para rodar as migrations:
+#### Executando as migrações
 
-    `yarn migration:up` ou `npm run migration:up`
+    yarn migration:up ou npm run migration:up
 
-Para rodar o server:
+#### Executando a aplicação
 
-    `yarn dev` ou `npm run dev`
+    yarn dev
+
+ou
+
+npm run dev
 
 ## Funcionalidades
 
-A api foi desenvolvida utilizando o padra rest, abaixo serão listados as rotas disponibilizadas pela aplicação:
+A aplicação foi desenvolvida utilizando o padrão REST, abaixo serão listadas as rotas disponibilizadas pela aplicação:
 
 ### Autenticação
 
-- Rota de cadastro de Usuario:
+- Rota de cadastro de Usuário:
 
-  - Rota utilizada para cadastrar um novo usuario:
+  Rota utilizada para cadastrar um novo usuário:
 
           http://localhost:3333/singup
 
-  - Para cadastrar um usuario, deve ser informado o nome, senha e email no corpo da requisição, conforme exemplo:
+  Para cadastrar um usuário, deve ser informado o nome, senha e e-mail no corpo da requisição, conforme exemplo:
 
-          {
-              "name": "teste",
-              "password": "111",
-              "email": "email@email.com"
-          }
+  ```json
+  {
+    "name": "teste",
+    "password": "111",
+    "email": "email@email.com"
+  }
+  ```
 
-- Rota para Login de Usuario:
+- Rota para Login de Usuário:
 
-  - Rota utilizada para o retorno do token de validação que será utilizado nas requisições de buscas e modificações:
+  Rota utilizada para o retorno do código de autorização que será utilizado nas requisições de buscas e modificações:
 
           http://localhost:3333/login
 
-  - Para realizar o login, deve ser informado o email e senha no corpo da requisção no formato JSON, conforme exemplo:
+  Para realizar o login, deve ser informado o email e senha no corpo da requisção no formato JSON, conforme exemplo:
 
-          {
-              "email": "email@email.com",
-              "password": "111"
-          }
+  ```json
+  {
+    "email": "email@email.com",
+    "password": "111"
+  }
+  ```
 
-  - Após realizar o login, será retornado o token de acesso, conforme exemplo:
+  Após realizar o login, será retornado o token de acesso, conforme exemplo:
 
-          {
-              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjE2ODY3MDIyLCJleHAiOjE2MTY5NTM0MjJ9.4EqhFkGymSWPHMmE2mHxEUyd3xbzsTioMm2bo52oico"
-          }
+  ```json
+  {
+    "token": "<código de token>"
+  }
+  ```
 
+---
 
+## Funcionalidades protegidas
+
+### Rotas de projetos
+
+Base da url (`{base}`): `https://localhost:3333/projetos`
+
+#### Criar novo projeto:
+
+Realizando um `POST` para a rota `{base}` irá executar a criação de um novo projeto na base de dados.
+
+```json
+{
+	"name": "<nome do projeto>",
+	"navers"?: [
+		<ids dos navers>
+	]
+}
+```
+
+#### Buscando projeto por identificador
+
+Realizando um `GET` para a rota `{base}/:id` irá executar a busca por ID de projeto, retornando um único projeto da base de dados.
+
+```json
+{
+  "id": 1,
+  "name": "teste",
+  "navers": [
+    {
+      "id": 8,
+      "birthdate": "1997-01-20",
+      "admission_date": "2020-02-22",
+      "name": "fulano,o clicano",
+      "job_role": "desenvolvedor pleno"
+    }
+  ]
+}
+```
+
+#### Listando projetos
+
+Realizando um `GET` para a rota `{base}` irá executar a busca por todos os projetos indexados no banco.
+
+Pode-se utilizar os seguintes filtros de query opcionais na requisição: `?name={valor desejado}` (Obs: remover `{}`).
+
+```json
+[
+  {
+    "id": 11,
+    "name": "teste"
+  },
+  {
+    "id": 15,
+    "name": "teste2"
+  },
+  {
+    "id": 16,
+    "name": "teste3"
+  },
+  {
+    "id": 18,
+    "name": "Projetasso"
+  }
+]
+```
+
+#### Deletar projeto
+
+`DELETE - {base}/:id` - o projeto de `:id` será deletado. Tenha em mente que não será possível reverter.
+
+#### Alterar projeto
+
+Realizando um `PATCH - {base}` ira atualizar o projeto, é importante sempre informar no corpo da requisição o `id` do projeto e os dados que devem ser atualizados, no caso de projetos é possivel atualizar o nome e os navers.
+
+## Rotas de navers
+
+Base da url (`{base}`): `https://localhost:3333/navers`
+
+#### Criar novo projeto:
+
+Realizando um `POST` para a rota `{base}` irá executar a criação de um novo projeto na base de dados.
+
+```json
+{
+	"name": "<nome do projeto>",
+	"navers"?: [
+		<ids dos navers>
+	]
+}
+```
+
+#### Buscando projeto por identificador
+
+Realizando um `GET` para a rota `{base}/:id` irá executar a busca por ID de projeto, retornando um único projeto da base de dados.
+
+```json
+{
+  "id": 1,
+  "name": "teste",
+  "navers": [
+    {
+      "birthdate": "1997-01-20",
+      "admission_date": "2020-02-22",
+      "id": 8,
+      "name": "fulano,o clicano",
+      "job_role": "desenvolvedor pleno"
+    }
+  ]
+}
+```
+
+#### Listando projetos
+
+Realizando um `GET` para a rota `{base}` irá executar a busca por todos os projetos indexados no banco.
+
+Pode-se utilizar os seguintes filtros de query opcionais na requisição: `?name={valor desejado}` (Obs: remover `{}`).
+
+```json
+[
+  {
+    "id": 11,
+    "name": "teste"
+  },
+  {
+    "id": 15,
+    "name": "teste2"
+  },
+  {
+    "id": 16,
+    "name": "teste3"
+  },
+  {
+    "id": 18,
+    "name": "Projetasso"
+  }
+]
+```
+
+#### Deletar projeto
+
+`DELETE - {base}/:id` - o projeto de `:id` será deletado. Tenha em mente que não será possível reverter.
+
+#### Alterar projeto
+
+Realizando um `PATCH - {base}` ira atualizar o projeto, é importante sempre informar no corpo da requisição o `id` do projeto e os dados que devem ser atualizados, no caso de projetos é possivel atualizar o nome e os navers.

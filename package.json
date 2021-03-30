@@ -6,6 +6,7 @@
   "author": "Giovani Boff <giovanisouza15@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "predev":"sudo docker-compose up -d",
     "dev": "nodemon -L src/server.js --igonore __tests__",
     "dev:debug": "nodemon --inspect src/server.js",
     "migrate:up": "sequelize db:migrate",
