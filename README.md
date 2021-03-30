@@ -249,7 +249,7 @@ Pode-se utilizar os seguintes filtros de query opcionais na requisição: `?name
 
 #### Alterar naver
 
-Realizando um `PATCH - {base}` ira atualizar o naver, é importante sempre informar no corpo da requisição o `id` do projeto e os dados que devem ser atualizados, no caso dos navers é possivel atualizar o nome,
+Realizando um `PATCH - {base}` ira atualizar o naver, é importante sempre informar no corpo da requisição o `id` do naver e os dados que devem ser atualizados, no caso dos navers é possivel atualizar o nome,
 o aniversário, a data de admissão, o cargo e os projetos.
 
 ## Arquivos para testes no postman
