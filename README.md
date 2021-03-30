@@ -260,7 +260,7 @@ o aniversário, a data de admissão, o cargo e os projetos.
 Os arquivos json para testes no `Postman` estão disponiveis na pasta `Doc` do projeto. Aperte CRTL+O para importar os arquivos no seu aplicativo. 
 
 Sao dois aquivos:
- - `Navedex-api Enviroment.postman_environment.json` - Arquivo com as variaveis de ambiente.
+ - `Navedex-api Enviroment.postman_environment.json` - Arquivo com as variaveis de ambiente. (Depois de importado, deve ser selecionado como enviroment)
  - `Navedex-API.postman_collection.json` - Arquivo com as rotas e exemplos de requisições.
 
 
