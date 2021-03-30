@@ -185,12 +185,6 @@ Realizando um `POST` para a rota `{base}` irá executar a criação de um novo n
         <id dos projetos>
     ]
 }
-{
-	"name": "<nome do projeto>",
-	"navers"?: [
-		<ids dos navers>
-	]
-}
 ```
 
 #### Buscando naver por identificador
