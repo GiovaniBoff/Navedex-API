@@ -171,11 +171,20 @@ Realizando um `PATCH - {base}` ira atualizar o projeto, é importante sempre inf
 
 Base da url (`{base}`): `https://localhost:3333/navers`
 
-#### Criar novo projeto:
+#### Criar novo naver:
 
-Realizando um `POST` para a rota `{base}` irá executar a criação de um novo projeto na base de dados.
+Realizando um `POST` para a rota `{base}` irá executar a criação de um novo naver na base de dados.
 
 ```json
+{
+	"name":"<nome do naver>",
+	"birthdate":"<data de nascimento>",
+	"admission_date":"<data de admissão>",
+	"job_role":"<cargo>",
+    "projects"?:[
+        <id dos projetos>
+    ]
+}
 {
 	"name": "<nome do projeto>",
 	"navers"?: [
@@ -184,57 +193,71 @@ Realizando um `POST` para a rota `{base}` irá executar a criação de um novo p
 }
 ```
 
-#### Buscando projeto por identificador
+#### Buscando naver por identificador
 
-Realizando um `GET` para a rota `{base}/:id` irá executar a busca por ID de projeto, retornando um único projeto da base de dados.
+Realizando um `GET` para a rota `{base}/:id` irá executar a busca por ID de naver, retornando um único naver da base de dados.
 
 ```json
 {
-  "id": 1,
+  "id": 5,
   "name": "teste",
-  "navers": [
+  "birthdate": "1997-01-20",
+  "admission_date": "2020-02-22",
+  "job_role": "teste",
+  "projects": [
     {
-      "birthdate": "1997-01-20",
-      "admission_date": "2020-02-22",
       "id": 8,
-      "name": "fulano,o clicano",
-      "job_role": "desenvolvedor pleno"
+      "name": "teste"
+    },
+    {
+      "id": 9,
+      "name": "teste"
     }
   ]
 }
 ```
 
-#### Listando projetos
+#### Listando Navers
 
 Realizando um `GET` para a rota `{base}` irá executar a busca por todos os projetos indexados no banco.
 
-Pode-se utilizar os seguintes filtros de query opcionais na requisição: `?name={valor desejado}` (Obs: remover `{}`).
+Pode-se utilizar os seguintes filtros de query opcionais na requisição: `?name={valor desejado}, ?companyTime={valor desejado}, ?jobRole={valor desejado}` (Obs: remover `{}`).
 
 ```json
 [
   {
-    "id": 11,
-    "name": "teste"
+    "birthdate": "1997-01-20",
+    "admission_date": "2020-02-22",
+    "id": 5,
+    "name": "teste",
+    "job_role": "teste"
   },
   {
-    "id": 15,
-    "name": "teste2"
+    "birthdate": "1997-01-20",
+    "admission_date": "2020-02-22",
+    "id": 6,
+    "name": "teste",
+    "job_role": "teste"
   },
   {
-    "id": 16,
-    "name": "teste3"
-  },
-  {
-    "id": 18,
-    "name": "Projetasso"
+    "birthdate": "1997-01-20",
+    "admission_date": "2020-02-22",
+    "id": 8,
+    "name": "fulano,o clicano",
+    "job_role": "desenvolvedor pleno"
   }
 ]
 ```
 
-#### Deletar projeto
+#### Deletar naver
 
-`DELETE - {base}/:id` - o projeto de `:id` será deletado. Tenha em mente que não será possível reverter.
+`DELETE - {base}/:id` - o naver de `:id` será deletado. Tenha em mente que não será possível reverter.
 
-#### Alterar projeto
+#### Alterar naver
 
-Realizando um `PATCH - {base}` ira atualizar o projeto, é importante sempre informar no corpo da requisição o `id` do projeto e os dados que devem ser atualizados, no caso de projetos é possivel atualizar o nome e os navers.
+Realizando um `PATCH - {base}` ira atualizar o naver, é importante sempre informar no corpo da requisição o `id` do projeto e os dados que devem ser atualizados, no caso dos navers é possivel atualizar o nome,
+o aniversário, a data de admissão, o cargo e os projetos.
+
+## Arquivos para testes no postman
+
+Os arquivos json para testes no postman estão disponiveis na pasta `Doc` do projeto, basta importa-los no postman que voce encotrara exemplos das requisições.
