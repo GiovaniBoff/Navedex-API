@@ -51,7 +51,7 @@ class ProjectService {
             where: {
                 [Op.or]: naversQuery
             },
-            attributes: ['id', 'name', 'job_role','birthdate', 'admission_date']
+            attributes: ['id', 'name', 'job_role', 'birthdate', 'admission_date']
         })
 
         const { id, name } = projectFound;
@@ -64,7 +64,6 @@ class ProjectService {
 
         return project;
     }
-
 
     async store(project, userId) {
 
