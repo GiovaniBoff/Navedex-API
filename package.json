@@ -6,7 +6,7 @@
   "author": "Giovani Boff <giovanisouza15@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "predev":"sudo docker-compose up -d",
+    "predev": "sudo docker-compose up -d",
     "dev": "nodemon -L src/server.js --igonore __tests__",
     "dev:debug": "nodemon --inspect src/server.js",
     "migrate:up": "sequelize db:migrate",
@@ -15,7 +15,10 @@
     "seed": "",
     "pretest": "NODE_ENV=test sequelize db:migrate",
     "test": "NODE_ENV=test jest",
-    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all"
+    "posttest": "NODE_ENV=test sequelize db:migrate:undo:all",
+    "ci:test": "yarn pretest && yarn test && yarn posttest",
+    "lint": "eslint --ext .tsx,.ts,.js,.jsx src",
+    "lint:fix": "yarn lint --fix"
   },
   "devDependencies": {
     "@sucrase/jest-plugin": "^2.0.0",
