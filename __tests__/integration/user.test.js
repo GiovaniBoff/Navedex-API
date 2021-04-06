@@ -3,8 +3,8 @@ import request from 'supertest';
 import app from '../../src/app';
 
 import User from '../../src/models/User';
-describe('User authentication', () => {
 
+describe('User authentication', () => {
     it('should authenticate with valid credentials', async () => {
         const user = await User.create({
             name: "TestUser",

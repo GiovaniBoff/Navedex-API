@@ -25,5 +25,5 @@ jobs:
     - name: run scripts
       run: yarn
     - name: test application
-      run: yarn ci:test
+      run: yarn test
       
