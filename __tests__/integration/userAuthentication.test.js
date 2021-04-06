@@ -39,5 +39,23 @@ describe('User authentication', () => {
         expect(response.status).toBe(400);
     });
 
+    it('should return jwt token when autheticated', async () => {
+        const user = await User.create({
+            name: "TestUser",
+            email: "test3@mail.com",
+            password: "1234"
+        });
+
+        const response = await request(app)
+            .post("/login")
+            .send({
+                email: user.email,
+                password: user.password
+            })
+
+        expect(response.body).toHaveProperty('token');
+    });
+
+
 
 });
