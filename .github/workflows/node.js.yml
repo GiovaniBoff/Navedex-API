@@ -24,8 +24,6 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - name: run scripts
       run: yarn
-    - name: lint application
-      run: yarn lint
     - name: test application
       run: yarn ci:test
       

@@ -1,8 +1,8 @@
+import { Router } from 'express';
 import userController from './controllers/UserController';
 import naverController from './controllers/NaverController';
 import projectController from './controllers/ProjectController';
 import authMiddleware from './middlewares/auth';
-import { Router } from 'express';
 
 const routes = new Router();
 
@@ -19,7 +19,6 @@ routes.patch('/projects', projectController.update);
 
 routes.delete('/projects/:id', projectController.delete);
 
-
 routes.post('/navers', naverController.store);
 
 routes.get('/navers', naverController.index);
@@ -28,6 +27,5 @@ routes.get('/navers/:id', naverController.show);
 routes.patch('/navers', naverController.update);
 
 routes.delete('/navers/:id', naverController.delete);
-
 
 export default routes;
