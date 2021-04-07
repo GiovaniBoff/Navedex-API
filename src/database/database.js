@@ -15,4 +15,5 @@ module.exports = {
     underscored: true,
     underscoredAll: true,
   },
+  logging: false,
 };
