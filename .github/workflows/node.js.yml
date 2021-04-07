@@ -26,4 +26,6 @@ jobs:
       run: yarn
     - name: test application
       run: yarn test
+    - name: run applicaton dev
+      run: yarn dev
       
