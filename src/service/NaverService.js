@@ -1,5 +1,5 @@
-import { json, Op, where } from 'sequelize';
-import moment, { utc } from 'moment-timezone';
+import { Op } from 'sequelize';
+import moment from 'moment-timezone';
 import naverModel from '../models/Naver';
 import projectModel from '../models/Project';
 import userModel from '../models/User';
@@ -13,7 +13,7 @@ class NaverService {
       attributes: ['id', 'name', 'birthdate', 'admission_date', 'job_role'],
     };
 
-    if (naverQuery != undefined) {
+    if (naverQuery !== undefined) {
       const { name, companyTime, jobRole } = naverQuery;
 
       if (name) {
